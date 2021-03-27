@@ -15,7 +15,8 @@
     "baseUrl": "./src",
     "paths": {
       "@config": ["config/index"],
-      "@modules/*": ["modules/*"]
+      "@modules/*": ["modules/*"],
+      "@utils/*": ["utils/*"]
     }
   },
   "include": ["src/**/*", "scripts/**/*", "./mikro-orm.config.ts"],

@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.13.13",
+    "@babel/preset-env": "^7.13.12",
     "@mikro-orm/cli": "^4.5.1",
     "@nestjs/cli": "^7.0.0",
     "@nestjs/schematics": "^7.0.0",

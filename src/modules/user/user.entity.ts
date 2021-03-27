@@ -1,33 +1,30 @@
-import { Entity, Enum, PrimaryKey, Property } from '@mikro-orm/core'
-import { v4 } from 'uuid'
-
-export enum UserStatus {
-  Active = 'Active',
-  Deleted = 'Deleted',
-}
+import { Collection, Entity, Index, OneToMany, Property } from '@mikro-orm/core'
+import { BaseEntity } from '@utils/entity'
+import { Book } from '@modules/book/book.entity'
+import { Loan } from '@modules/loan/loan.entity'
 
 @Entity()
-export class User {
-  @PrimaryKey()
-  id!: number
+export class User extends BaseEntity {
+  @Property()
+  firstname?: string
 
   @Property()
-  uuid: string = v4()
+  lastname?: string
 
   @Property()
-  firstName = ''
-
-  @Property()
-  lastName = ''
-
-  @Enum(() => UserStatus)
-  status!: UserStatus
+  @Index()
+  username!: string
 
   @Property({ nullable: true })
   pictureUrl?: string
 
   @Property()
+  @Index()
   email!: string
 
-  /*********************************** relations ***********************************/
+  @OneToMany(() => Book, (book) => book.owner)
+  books = new Collection<Book>(this)
+
+  @OneToMany(() => Loan, (loan) => loan.user)
+  loans = new Collection<Loan>(this)
 }

@@ -1,10 +1,12 @@
 import * as dotenv from 'dotenv'
+import { Book } from './src/modules/book/book.entity'
+import { Loan } from './src/modules/loan/loan.entity'
 import { User } from './src/modules/user/user.entity'
 
 dotenv.config()
 
 export default {
-  entities: [User],
+  entities: [User, Book, Loan],
   type: 'mysql',
   dbName: process.env?.MYSQL_DATABASE,
   user: process.env?.MYSQL_USERNAME,
