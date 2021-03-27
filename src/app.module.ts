@@ -1,10 +1,12 @@
 import { Logger, Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
-import { config, MysqlConfig } from '@config'
+import { GraphQLModule } from '@nestjs/graphql'
+import { config, GraphQLConfig, MysqlConfig } from '@config'
 import { UserModule } from '@modules/user/user.module'
 import { BookModule } from '@modules/book/book.module'
 import { LoanModule } from '@modules/loan/loan.module'
+import { GqlContext } from '@utils/types'
 
 @Module({
   imports: [
@@ -25,6 +27,18 @@ import { LoanModule } from '@modules/loan/loan.module'
           logger: logger.log.bind(logger),
           debug: mysql?.debug,
           charset: 'utf8mb4_unicode_ci',
+        }
+      },
+      inject: [ConfigService],
+    }),
+    GraphQLModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => {
+        const gqlOptions = configService.get<GraphQLConfig>('graphql')
+        return {
+          context: (ctx: GqlContext) => ({ req: ctx.req }),
+          autoSchemaFile: true,
+          ...gqlOptions,
         }
       },
       inject: [ConfigService],

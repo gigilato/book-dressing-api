@@ -1,3 +1,4 @@
+import { Field, ObjectType } from '@nestjs/graphql'
 import { Collection, Entity, Index, ManyToOne, OneToMany, Property } from '@mikro-orm/core'
 import { BaseEntity } from '@utils/entity'
 import { slugify } from '@utils/slugify'
@@ -8,11 +9,14 @@ const slugifyTitle = (entity: Book) => slugify(entity.title)
 const slugifyAuthor = (entity: Book) => slugify(entity.author)
 
 @Entity()
+@ObjectType()
 export class Book extends BaseEntity {
   @Property()
+  @Field()
   isbn!: string
 
   @Property()
+  @Field()
   title!: string
 
   @Property({ onCreate: slugifyTitle, onUpdate: slugifyTitle })
@@ -20,6 +24,7 @@ export class Book extends BaseEntity {
   titleSlug!: string
 
   @Property()
+  @Field()
   author!: string
 
   @Property({ onCreate: slugifyAuthor, onUpdate: slugifyAuthor })
@@ -27,9 +32,11 @@ export class Book extends BaseEntity {
   authorSlug!: string
 
   @Property()
+  @Field()
   description!: string
 
   @Property({ nullable: true })
+  @Field({ nullable: true })
   pictureUrl?: string
 
   @ManyToOne(() => User)

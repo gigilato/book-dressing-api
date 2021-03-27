@@ -24,7 +24,7 @@ export const defaultConfig = {
       : false,
     path: process.env.GRAPHQL_ENDPOINT,
     introspection: true,
-    debug: process.env.GRAPHQL_PLAYGROUND === 'true' ? true : false,
+    debug: Boolean(process.env.GRAPHQL_PLAYGROUND),
   },
   firebase: JSON.parse(
     Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_JSON ?? '', 'base64').toString('ascii')
@@ -35,7 +35,7 @@ export const defaultConfig = {
     password: process.env.MYSQL_PASSWORD ?? '',
     port: parseInt(process.env.MYSQL_PORT ?? '', 10),
     host: process.env.MYSQL_HOST ?? '',
-    debug: Boolean(process.env.MYSQL_DEBUG ?? ''),
+    debug: Boolean(process.env.MYSQL_DEBUG),
   },
 }
 
