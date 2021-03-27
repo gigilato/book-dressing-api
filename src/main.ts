@@ -8,7 +8,7 @@ import { AppModule } from './app.module'
 let app: NestExpressApplication
 
 const bootstrap = async () => {
-  const app = await NestFactory.create(AppModule)
+  app = await NestFactory.create(AppModule)
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }))
   useContainer(app.select(AppModule), { fallbackOnErrors: true })
