@@ -13,3 +13,4 @@ export type FirebaseConfig = {
   appId: string
   measurementId: string
 }
+export type MysqlConfig = typeof defaultConfig.mysql

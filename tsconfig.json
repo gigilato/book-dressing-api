@@ -15,10 +15,9 @@
     "baseUrl": "./src",
     "paths": {
       "@config": ["config/index"],
-      "@api": ["api/index"],
-      "@api/*": ["api/*"]
-    },
+      "@modules/*": ["modules/*"]
+    }
   },
-  "include": ["src/**/*", "scripts/**/*"],
+  "include": ["src/**/*", "scripts/**/*", "./mikro-orm.config.ts"],
   "exclude": ["node_modules", "dist"]
 }

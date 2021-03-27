@@ -29,6 +29,13 @@ export const defaultConfig = {
   firebase: JSON.parse(
     Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_JSON ?? '', 'base64').toString('ascii')
   ),
+  mysql: {
+    database: process.env.MYSQL_DATABASE ?? '',
+    username: process.env.MYSQL_USERNAME ?? '',
+    password: process.env.MYSQL_PASSWORD ?? '',
+    port: parseInt(process.env.MYSQL_PORT ?? '', 10),
+    host: process.env.MYSQL_HOST ?? '',
+  },
 }
 
 export const config = () => defaultConfig
