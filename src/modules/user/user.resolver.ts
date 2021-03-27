@@ -1,4 +1,4 @@
-import { Query, Resolver } from '@nestjs/graphql'
+import { Mutation, Query, Resolver } from '@nestjs/graphql'
 import { DeepPartial } from '@utils/types'
 import { User } from './user.entity'
 import { UserService } from './user.service'
@@ -9,6 +9,11 @@ export class UserResolver {
 
   @Query(() => User)
   me(): DeepPartial<User> {
+    return { username: 'gigilato', uuid: 'uuid' }
+  }
+
+  @Mutation(() => User)
+  updateProfile(): DeepPartial<User> {
     return { username: 'gigilato', uuid: 'uuid' }
   }
 }
