@@ -1,0 +1,16 @@
+{
+  "presets": ["babel-preset-expo", "module:metro-react-native-babel-preset"],
+  "plugins": [
+    "lodash",
+    [
+      "module-resolver",
+      {
+        "root": "./src",
+        "alias": {
+          "@config": "./src/config",
+          "@api": "./src/api"
+        }
+      }
+    ]
+  ]
+}
