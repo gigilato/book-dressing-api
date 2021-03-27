@@ -9,6 +9,7 @@ const schema = Joi.object({
   MYSQL_PASSWORD: requiredStringSchema,
   MYSQL_PORT: requiredStringSchema,
   MYSQL_HOST: requiredStringSchema,
+  MYSQL_DEBUG: requiredStringSchema,
   SERVER_HOST: requiredStringSchema,
   SERVER_PORT: requiredStringSchema,
   JWT_SECRET: requiredStringSchema,

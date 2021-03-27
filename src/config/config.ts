@@ -35,6 +35,7 @@ export const defaultConfig = {
     password: process.env.MYSQL_PASSWORD ?? '',
     port: parseInt(process.env.MYSQL_PORT ?? '', 10),
     host: process.env.MYSQL_HOST ?? '',
+    debug: Boolean(process.env.MYSQL_DEBUG ?? ''),
   },
 }
 

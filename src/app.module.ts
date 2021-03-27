@@ -21,7 +21,7 @@ import { UserModule } from '@modules/user/user.module'
           host: mysql?.host,
           port: mysql?.port,
           logger: logger.log.bind(logger),
-          debug: true,
+          debug: mysql?.debug,
           charset: 'utf8mb4_unicode_ci',
         }
       },
