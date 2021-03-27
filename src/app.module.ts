@@ -3,6 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { config, MysqlConfig } from '@config'
 import { UserModule } from '@modules/user/user.module'
+import { BookModule } from '@modules/book/book.module'
+import { LoanModule } from '@modules/loan/loan.module'
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { UserModule } from '@modules/user/user.module'
       inject: [ConfigService],
     }),
     UserModule,
+    BookModule,
+    LoanModule,
   ],
   controllers: [],
   providers: [],
