@@ -26,7 +26,7 @@ export class BaseEntity {
 }
 
 export const BaseService = <T extends BaseEntity>(classRef: Type<T>) => {
-  class EntityConnection extends Connection(classRef) {}
+  class EntityConnection extends Connection(classRef, true) {}
 
   @Injectable()
   class BaseServiceType {
@@ -93,6 +93,12 @@ export const BaseService = <T extends BaseEntity>(classRef: Type<T>) => {
       repo.remove(entity)
       if (!options?.em) await repo.flush()
       return entity
+    }
+
+    async populate(entity: T, options?: ServiceMethodOptions) {
+      const repo = this.getRepository(options?.em)
+      const populatedEntity = await repo.populate(entity, options?.populate)
+      return populatedEntity
     }
   }
   return BaseServiceType

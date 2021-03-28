@@ -1,9 +1,9 @@
-import { Field, ObjectType, Int } from '@nestjs/graphql'
+import { Field, ObjectType, Int, ArgsType } from '@nestjs/graphql'
 import { Type } from '@nestjs/common'
 import { BaseEntity } from './entity'
 
-export const Connection = <T extends BaseEntity>(classRef: Type<T>) => {
-  @ObjectType(`${classRef.name}Edge`)
+export const Connection = <T extends BaseEntity>(classRef: Type<T>, service?: boolean) => {
+  @ObjectType(`${classRef.name}${service ? 'Service' : ''}Edge`)
   abstract class EdgeType {
     @Field(() => Int)
     cursor!: number
@@ -11,13 +11,13 @@ export const Connection = <T extends BaseEntity>(classRef: Type<T>) => {
     node!: T
   }
 
-  @ObjectType(`${classRef.name}Aggregate`)
+  @ObjectType(`${classRef.name}${service ? 'Service' : ''}Aggregate`)
   abstract class AggregateType {
     @Field(() => Int)
     count!: number
   }
 
-  @ObjectType(`${classRef.name}PageInfos`)
+  @ObjectType(`${classRef.name}${service ? 'Service' : ''}PageInfos`)
   abstract class PageInfosType {
     @Field(() => Boolean)
     hasNextPage!: boolean
@@ -34,4 +34,12 @@ export const Connection = <T extends BaseEntity>(classRef: Type<T>) => {
   }
 
   return ConnectionType
+}
+
+@ArgsType()
+export class BaseConnectionInput {
+  @Field(() => Int, { nullable: true })
+  limit?: number
+  @Field(() => Int, { nullable: true })
+  offset?: number
 }

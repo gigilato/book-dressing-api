@@ -23,6 +23,7 @@ export type ServiceMethodOptions = {
 export interface GqlRequestWithContext {
   req: {
     user: User
+    targetUser: User
     book: Book
     loan: Loan
   } & Request
