@@ -36,7 +36,12 @@ export const BaseService = <T extends BaseEntity>(classRef: Type<T>) => {
       return em?.getRepository(classRef) ?? this.repository
     }
 
-    getOne(where: FilterQuery<T>, options?: ServiceMethodOptions): Promise<T> {
+    getOne(where: FilterQuery<T>, options?: ServiceMethodOptions): Promise<T | null> {
+      const repo = this.getRepository(options?.em)
+      return repo.findOne(where, options?.populate, options?.orderBy)
+    }
+
+    getOneOrFail(where: FilterQuery<T>, options?: ServiceMethodOptions): Promise<T> {
       const repo = this.getRepository(options?.em)
       return repo.findOneOrFail(where, options?.populate, options?.orderBy)
     }
