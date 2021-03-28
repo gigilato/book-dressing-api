@@ -1,8 +1,15 @@
 import { Injectable } from '@nestjs/common'
-import { MikroORM } from '@mikro-orm/core'
-import { EntityManager } from '@mikro-orm/mysql'
+import { EntityRepository } from '@mikro-orm/core'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import { BaseService } from '@utils/entity'
+import { Book } from './book.entity'
 
 @Injectable()
-export class BookService {
-  constructor(private readonly orm: MikroORM, private readonly em: EntityManager) {}
+export class BookService extends BaseService(Book) {
+  constructor(
+    @InjectRepository(Book)
+    private readonly bookRepository: EntityRepository<Book>
+  ) {
+    super(bookRepository)
+  }
 }

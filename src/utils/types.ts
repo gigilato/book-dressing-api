@@ -1,3 +1,5 @@
+import { EntityManager, QueryOrderMap } from '@mikro-orm/core'
+
 export type GqlContext = { req?: Request }
 export declare type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends Array<infer U>
@@ -5,4 +7,12 @@ export declare type DeepPartial<T> = {
     : T[P] extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
     : DeepPartial<T[P]>
+}
+
+export type ServiceMethodOptions = {
+  em?: EntityManager
+  populate?: any
+  orderBy?: QueryOrderMap
+  limit?: number
+  offset?: number
 }
