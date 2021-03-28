@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20210328132057 extends Migration {
+export class Migration20210328155553 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table "user" ("id" serial primary key, "uuid" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "firstname" varchar(255) null, "lastname" varchar(255) null, "username" varchar(255) not null, "picture_url" varchar(255) null, "email" varchar(255) not null);'
@@ -10,7 +10,7 @@ export class Migration20210328132057 extends Migration {
     this.addSql('create index "user_email_index" on "user" ("email");')
 
     this.addSql(
-      'create table "book" ("id" serial primary key, "uuid" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "isbn" varchar(255) not null, "title" varchar(255) not null, "title_slug" varchar(255) not null, "author" varchar(255) not null, "author_slug" varchar(255) not null, "description" varchar(255) not null, "picture_url" varchar(255) null, "owner_id" int4 not null);'
+      'create table "book" ("id" serial primary key, "uuid" varchar(255) not null, "created_at" timestamptz(0) not null, "updated_at" timestamptz(0) not null, "isbn" varchar(255) not null, "title" varchar(255) not null, "title_slug" varchar(255) not null, "author" varchar(255) not null, "author_slug" varchar(255) not null, "description" varchar(255) not null, "status" int2 not null, "picture_url" varchar(255) null, "owner_id" int4 not null);'
     )
     this.addSql('create index "book_uuid_index" on "book" ("uuid");')
     this.addSql('create index "book_title_slug_index" on "book" ("title_slug");')
