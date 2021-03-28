@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql'
+import { Field, ObjectType, registerEnumType } from '@nestjs/graphql'
 import { Collection, Entity, Enum, Index, ManyToOne, OneToMany, Property } from '@mikro-orm/core'
 import { BaseEntity } from '@utils/entity'
 import { slugify } from '@utils/slugify'
@@ -12,6 +12,7 @@ export enum BookStatus {
   Active = 'Active',
   Inactive = 'Inactive',
 }
+registerEnumType(BookStatus, { name: 'BookStatus' })
 
 @Entity()
 @ObjectType()

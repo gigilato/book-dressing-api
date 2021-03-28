@@ -1,6 +1,6 @@
 import { ArgsType, Field, InputType, ObjectType } from '@nestjs/graphql'
 import { BaseConnectionInput, Connection } from '@utils/pagination'
-import { Book } from './book.entity'
+import { Book, BookStatus } from './book.entity'
 
 @ObjectType()
 export class BookConnection extends Connection(Book) {}
@@ -52,6 +52,8 @@ class UpdateBookDataInput {
   description?: string
   @Field({ nullable: true })
   pictureUrl?: string
+  @Field(() => BookStatus, { nullable: true })
+  status?: BookStatus
 }
 
 @ArgsType()

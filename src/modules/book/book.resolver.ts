@@ -4,7 +4,7 @@ import { User } from '@modules/user/user.entity'
 import { UserService } from '@modules/user/user.service'
 import { slugify } from '@utils/slugify'
 import { CurrentUser } from '@utils/decorators'
-import { Book } from './book.entity'
+import { Book, BookStatus } from './book.entity'
 import { BookService } from './book.service'
 import {
   BookConnection,
@@ -34,7 +34,7 @@ export class BookResolver {
     let where: FilterQuery<Book> = {}
     if (args?.where?.search) {
       const search = { $like: slugify(args?.where?.search) }
-      where = { ...where, $or: [{ titleSlug: { $like: search } }, { authorSlug: search }] }
+      where = { $or: [{ titleSlug: search }, { authorSlug: search }] }
     }
     if (args?.where?.userUuid) {
       const owner = await this.userService.getOneOrFail({ uuid: args?.where?.userUuid })
@@ -55,7 +55,11 @@ export class BookResolver {
   @Mutation(() => Book)
   async updateBook(@Args() args: UpdateBookInput): Promise<Book> {
     const result = await this.orm.em.transactional(async (em) => {
-      const book = await this.bookService.getOneOrFail({ uuid: args.where.bookUuid }, { em })
+      const where = { uuid: args.where.bookUuid }
+      const book =
+        args.data.status === BookStatus.Inactive
+          ? await this.bookService.getOneAvailableOrFail(where, { em })
+          : await this.bookService.getOneOrFail(where, { em })
       const updatedBook = await this.bookService.update(book, args.data, { em })
       em.persist(updatedBook)
       return updatedBook
@@ -66,7 +70,7 @@ export class BookResolver {
   @Mutation(() => Book)
   async removeBook(@Args() args: BookWhereUniqueInput): Promise<Book> {
     const result = await this.orm.em.transactional(async (em) => {
-      const book = await this.bookService.getOneOrFail({ uuid: args.bookUuid }, { em })
+      const book = await this.bookService.getOneAvailableOrFail({ uuid: args.bookUuid }, { em })
       const removedBook = await this.bookService.remove(book, { em })
       em.persist(removedBook)
       return removedBook
@@ -79,7 +83,7 @@ export class BookResolver {
     return this.bookLoader.owner().load(book)
   }
   @ResolveField('available', () => Boolean)
-  resolveAvailable(): Boolean {
-    return true
+  resolveAvailable(@Parent() book: Book): Promise<Boolean> {
+    return this.bookLoader.available().load(book)
   }
 }

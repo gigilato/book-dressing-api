@@ -18,4 +18,10 @@ export class BookLoader {
       )
     )
   }
+
+  available() {
+    return new DataLoader<Book, boolean>(async (data) =>
+      Promise.all(data.map((book) => this.bookService.isAvailable(book)))
+    )
+  }
 }
