@@ -7,12 +7,12 @@ dotenv.config()
 
 export default {
   entities: [User, Book, Loan],
-  type: 'mysql',
-  dbName: process.env?.MYSQL_DATABASE,
-  user: process.env?.MYSQL_USERNAME,
-  password: process.env?.MYSQL_PASSWORD,
-  host: process.env?.MYSQL_HOST,
-  port: process.env?.MYSQL_PORT,
+  type: 'postgresql',
+  dbName: process.env?.SQL_DATABASE,
+  user: process.env?.SQL_USERNAME,
+  password: process.env?.SQL_PASSWORD,
+  host: process.env?.SQL_HOST,
+  port: process.env?.SQL_PORT,
   migrations: {
     path: './migrations',
     tableName: 'migrations',

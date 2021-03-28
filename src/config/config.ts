@@ -30,12 +30,12 @@ export const defaultConfig = {
     Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_JSON ?? '', 'base64').toString('ascii')
   ),
   mysql: {
-    database: process.env.MYSQL_DATABASE ?? '',
-    username: process.env.MYSQL_USERNAME ?? '',
-    password: process.env.MYSQL_PASSWORD ?? '',
-    port: parseInt(process.env.MYSQL_PORT ?? '', 10),
-    host: process.env.MYSQL_HOST ?? '',
-    debug: Boolean(process.env.MYSQL_DEBUG),
+    database: process.env.SQL_DATABASE ?? '',
+    username: process.env.SQL_USERNAME ?? '',
+    password: process.env.SQL_PASSWORD ?? '',
+    port: parseInt(process.env.SQL_PORT ?? '', 10),
+    host: process.env.SQL_HOST ?? '',
+    debug: Boolean(process.env.SQL_DEBUG),
   },
 }
 

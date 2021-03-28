@@ -18,7 +18,7 @@ import { GqlContext } from '@utils/types'
         const logger = new Logger('MikroORM')
         return {
           autoLoadEntities: true,
-          type: 'mysql',
+          type: 'postgresql',
           dbName: mysql?.database,
           user: mysql?.username,
           password: mysql?.password,

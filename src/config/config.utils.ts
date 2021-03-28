@@ -4,12 +4,12 @@ import { Logger } from '@nestjs/common'
 const requiredStringSchema = Joi.string().required()
 
 const schema = Joi.object({
-  MYSQL_DATABASE: requiredStringSchema,
-  MYSQL_USERNAME: requiredStringSchema,
-  MYSQL_PASSWORD: requiredStringSchema,
-  MYSQL_PORT: requiredStringSchema,
-  MYSQL_HOST: requiredStringSchema,
-  MYSQL_DEBUG: requiredStringSchema,
+  SQL_DATABASE: requiredStringSchema,
+  SQL_USERNAME: requiredStringSchema,
+  SQL_PASSWORD: requiredStringSchema,
+  SQL_PORT: requiredStringSchema,
+  SQL_HOST: requiredStringSchema,
+  SQL_DEBUG: requiredStringSchema,
   SERVER_HOST: requiredStringSchema,
   SERVER_PORT: requiredStringSchema,
   JWT_SECRET: requiredStringSchema,
