@@ -20,12 +20,12 @@ export class LoanResolver {
   }
 
   @Mutation(() => Loan)
-  startLoan(): DeepPartial<Loan> {
+  requestLoan(): DeepPartial<Loan> {
     return { uuid: 'uuid' }
   }
 
   @Mutation(() => Loan)
-  confirmLoan(): DeepPartial<Loan> {
+  acceptLoan(): DeepPartial<Loan> {
     return { uuid: 'uuid' }
   }
 

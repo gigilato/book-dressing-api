@@ -5,6 +5,7 @@ import { v4 } from 'uuid'
 import { EntityData, FilterQuery } from '@mikro-orm/core/typings'
 import { ServiceMethodOptions } from './types'
 import { Connection } from './pagination'
+import { NotFoundError } from './errors'
 
 @ObjectType()
 export class BaseEntity {
@@ -41,9 +42,13 @@ export const BaseService = <T extends BaseEntity>(classRef: Type<T>) => {
       return repo.findOne(where, options?.populate, options?.orderBy)
     }
 
-    getOneOrFail(where: FilterQuery<T>, options?: ServiceMethodOptions): Promise<T> {
+    async getOneOrFail(where: FilterQuery<T>, options?: ServiceMethodOptions): Promise<T> {
       const repo = this.getRepository(options?.em)
-      return repo.findOneOrFail(where, options?.populate, options?.orderBy)
+      try {
+        return repo.findOneOrFail(where, options?.populate, options?.orderBy)
+      } catch (e) {
+        throw new NotFoundError()
+      }
     }
 
     getAll(where: FilterQuery<T>, options?: ServiceMethodOptions): Promise<T[]> {

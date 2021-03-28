@@ -9,7 +9,7 @@ export class BookConnection extends Connection(Book) {}
 @ArgsType()
 export class BookWhereUniqueInput {
   @Field()
-  userUuid!: string
+  bookUuid!: string
 }
 
 @InputType()

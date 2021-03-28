@@ -21,10 +21,10 @@ export class UserResolver {
     const result = await this.orm.em.transactional(async (em) => {
       if (username) {
         const existingUser = await this.userService.getOne({ username }, { em })
-        if (existingUser) throw new ExistError('user')
+        if (existingUser) throw new ExistError()
       }
       const updatedUser = await this.userService.update(user, args, { em })
-      em.persist(user)
+      em.persist(updatedUser)
       return updatedUser
     })
     return result
