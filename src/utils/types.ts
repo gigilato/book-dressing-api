@@ -1,4 +1,7 @@
 import { EntityManager, QueryOrderMap } from '@mikro-orm/core'
+import { Book } from '@modules/book/book.entity'
+import { Loan } from '@modules/loan/loan.entity'
+import { User } from '@modules/user/user.entity'
 
 export type GqlContext = { req?: Request }
 export declare type DeepPartial<T> = {
@@ -15,4 +18,12 @@ export type ServiceMethodOptions = {
   orderBy?: QueryOrderMap
   limit?: number
   offset?: number
+}
+
+export interface GqlRequestWithContext {
+  req: {
+    user: User
+    book: Book
+    loan: Loan
+  } & Request
 }
