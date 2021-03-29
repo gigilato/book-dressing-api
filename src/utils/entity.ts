@@ -3,9 +3,9 @@ import { Field, ObjectType } from '@nestjs/graphql'
 import { Injectable, Type } from '@nestjs/common'
 import { v4 } from 'uuid'
 import { EntityData, FilterQuery } from '@mikro-orm/core/typings'
-import { ServiceMethodOptions } from './types'
-import { Connection } from './pagination'
-import { NotFoundError } from './errors'
+import { ServiceMethodOptions } from '@utils/types'
+import { NotFoundError } from '@utils/errors'
+import { IConnection } from '@utils/pagination'
 
 @ObjectType()
 export class BaseEntity {
@@ -27,8 +27,6 @@ export class BaseEntity {
 }
 
 export const BaseService = <T extends BaseEntity>(classRef: Type<T>) => {
-  class EntityConnection extends Connection(classRef, true) {}
-
   @Injectable()
   class BaseServiceType {
     constructor(private readonly repository: EntityRepository<T>) {}
@@ -59,7 +57,7 @@ export const BaseService = <T extends BaseEntity>(classRef: Type<T>) => {
     async getConnection(
       where: FilterQuery<T>,
       options?: ServiceMethodOptions
-    ): Promise<EntityConnection> {
+    ): Promise<IConnection<T>> {
       const repo = this.getRepository(options?.em)
       const offset = options?.offset ?? 0
       const [entities, count] = await repo.findAndCount(
@@ -71,7 +69,7 @@ export const BaseService = <T extends BaseEntity>(classRef: Type<T>) => {
       )
 
       const hasNextPage = entities.length + offset >= count
-      const connection: EntityConnection = {
+      const connection: IConnection<T> = {
         pageInfos: { hasNextPage },
         aggregate: { count },
         edges: entities.map((node, cursor) => ({ cursor, node })),
