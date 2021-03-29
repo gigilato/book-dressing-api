@@ -3,16 +3,9 @@ import { Type } from '@nestjs/common'
 import { BaseEntity } from '@utils/entity'
 
 export interface IConnection<T> {
-  edges: {
-    cursor: number
-    node: T
-  }[]
-  aggregate: {
-    count: number
-  }
-  pageInfos: {
-    hasNextPage: boolean
-  }
+  edges: { cursor: number; node: T }[]
+  aggregate: { count: number }
+  pageInfos: { hasNextPage: boolean }
 }
 
 export const Connection = <T extends BaseEntity>(classRef: Type<T>) => {

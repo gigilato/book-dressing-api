@@ -23,9 +23,14 @@ export const defaultConfig = {
     introspection: true,
     debug: Boolean(process.env.GRAPHQL_PLAYGROUND),
   },
-  firebase: JSON.parse(
-    Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_JSON ?? '', 'base64').toString('ascii')
-  ),
+  firebase: {
+    credential: JSON.parse(
+      Buffer.from(process.env.FIREBASE_CREDENTIAL ?? '', 'base64').toString('ascii')
+    ),
+    ...JSON.parse(
+      Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_JSON ?? '', 'base64').toString('ascii')
+    ),
+  },
   mysql: {
     database: process.env.SQL_DATABASE ?? '',
     username: process.env.SQL_USERNAME ?? '',

@@ -13,6 +13,7 @@ const schema = Joi.object({
   SERVER_HOST: requiredStringSchema,
   SERVER_PORT: requiredStringSchema,
   FIREBASE_SERVICE_ACCOUNT_JSON: requiredStringSchema,
+  FIREBASE_CREDENTIAL: requiredStringSchema,
   GRAPHQL_PLAYGROUND: requiredStringSchema,
   GRAPHQL_ENDPOINT: requiredStringSchema,
   ADMIN_USER: requiredStringSchema,
