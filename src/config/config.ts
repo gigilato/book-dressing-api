@@ -24,6 +24,7 @@ export const defaultConfig = {
     debug: Boolean(process.env.GRAPHQL_PLAYGROUND),
   },
   firebase: {
+    scheme: 'Bearer',
     credential: JSON.parse(
       Buffer.from(process.env.FIREBASE_CREDENTIAL ?? '', 'base64').toString('ascii')
     ),

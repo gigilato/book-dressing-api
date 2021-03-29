@@ -1,5 +1,7 @@
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql'
 import { FilterQuery, MikroORM } from '@mikro-orm/core'
+import { UseGuards } from '@nestjs/common'
+import { AuthGuard } from '@utils/guards'
 import { User } from '@modules/user/user.entity'
 import { UserService } from '@modules/user/user.service'
 import { slugify } from '@utils/slugify'
@@ -16,6 +18,7 @@ import {
 import { BookLoader } from './book.loader'
 
 @Resolver(() => Book)
+@UseGuards(AuthGuard)
 export class BookResolver {
   constructor(
     private readonly orm: MikroORM,

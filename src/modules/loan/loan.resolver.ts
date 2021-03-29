@@ -1,5 +1,7 @@
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql'
 import { MikroORM } from '@mikro-orm/core'
+import { UseGuards } from '@nestjs/common'
+import { AuthGuard } from '@utils/guards'
 import { CurrentUser } from '@utils/decorators'
 import { ValidationError } from '@utils/errors'
 import { Book } from '@modules/book/book.entity'
@@ -11,6 +13,7 @@ import { CreateLoanInput, LoanConnection, LoansInput, LoanWhereUniqueInput } fro
 import { LoanLoader } from './loan.loader'
 
 @Resolver(() => Loan)
+@UseGuards(AuthGuard)
 export class LoanResolver {
   constructor(
     private readonly orm: MikroORM,

@@ -6,5 +6,6 @@ import { FirebaseModule } from './firebase/firebase.module'
 @Module({
   imports: [FirebaseModule],
   providers: [LibrariesService],
+  exports: [LibrariesService],
 })
 export class LibrariesModule {}

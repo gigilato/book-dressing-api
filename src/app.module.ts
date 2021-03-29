@@ -7,6 +7,7 @@ import { UserModule } from '@modules/user/user.module'
 import { BookModule } from '@modules/book/book.module'
 import { LoanModule } from '@modules/loan/loan.module'
 import { AuthModule } from '@modules/auth/auth.module'
+import { LibrariesModule } from '@libraries/libraries.module'
 import { GqlContext } from '@utils/types'
 
 @Module({
@@ -44,6 +45,7 @@ import { GqlContext } from '@utils/types'
       },
       inject: [ConfigService],
     }),
+    LibrariesModule,
     AuthModule,
     UserModule,
     BookModule,

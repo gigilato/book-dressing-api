@@ -16,7 +16,8 @@
     "paths": {
       "@config": ["config/index"],
       "@modules/*": ["modules/*"],
-      "@utils/*": ["utils/*"]
+      "@utils/*": ["utils/*"],
+      "@libraries/*": ["libraries/*"]
     }
   },
   "include": ["src/**/*", "scripts/**/*", "./mikro-orm.config.ts"],

@@ -9,6 +9,7 @@
         "alias": {
           "@config": "./src/config",
           "@modules": "./src/modules",
+          "@libraries": "./src/libraries",
           "@utils": "./src/utils"
         }
       }

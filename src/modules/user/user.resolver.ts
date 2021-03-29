@@ -1,5 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { MikroORM } from '@mikro-orm/core'
+import { UseGuards } from '@nestjs/common'
+import { AuthGuard } from '@utils/guards'
 import { CurrentUser } from '@utils/decorators'
 import { ExistError } from '@utils/errors'
 import { User } from './user.entity'
@@ -7,6 +9,7 @@ import { UserService } from './user.service'
 import { UpdateProfileInput } from './user.types'
 
 @Resolver(() => User)
+@UseGuards(AuthGuard)
 export class UserResolver {
   constructor(private readonly orm: MikroORM, private readonly userService: UserService) {}
 

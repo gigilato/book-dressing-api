@@ -3,6 +3,7 @@ import { defaultConfig } from './config'
 export type Config = typeof defaultConfig
 export type GraphQLConfig = typeof defaultConfig.graphql
 export type FirebaseConfig = {
+  scheme: 'string'
   credential: {
     type: string
     project_id: string

@@ -9,7 +9,6 @@ import { Loan } from '@modules/loan/loan.entity'
 export class User extends BaseEntity {
   @Property()
   @Index()
-  @Field()
   firebaseId!: string
 
   @Property()
