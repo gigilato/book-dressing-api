@@ -12,10 +12,11 @@ const schema = Joi.object({
   SQL_DEBUG: requiredStringSchema,
   SERVER_HOST: requiredStringSchema,
   SERVER_PORT: requiredStringSchema,
-  JWT_SECRET: requiredStringSchema,
   FIREBASE_SERVICE_ACCOUNT_JSON: requiredStringSchema,
   GRAPHQL_PLAYGROUND: requiredStringSchema,
   GRAPHQL_ENDPOINT: requiredStringSchema,
+  ADMIN_USER: requiredStringSchema,
+  ADMIN_PASSWORD: requiredStringSchema,
 }).unknown(true)
 
 export const validateEnvFile = () => {

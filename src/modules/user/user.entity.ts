@@ -7,13 +7,15 @@ import { Loan } from '@modules/loan/loan.entity'
 @Entity()
 @ObjectType()
 export class User extends BaseEntity {
-  @Property({ nullable: true })
-  @Field({ nullable: true })
-  firstname?: string
+  @Property()
+  @Index()
+  @Field()
+  firebaseId!: string
 
-  @Property({ nullable: true })
-  @Field({ nullable: true })
-  lastname?: string
+  @Property()
+  @Index()
+  @Field()
+  email!: string
 
   @Property()
   @Index()
@@ -22,12 +24,15 @@ export class User extends BaseEntity {
 
   @Property({ nullable: true })
   @Field({ nullable: true })
-  pictureUrl?: string
+  firstname?: string
 
-  @Property()
-  @Index()
-  @Field()
-  email!: string
+  @Property({ nullable: true })
+  @Field({ nullable: true })
+  lastname?: string
+
+  @Property({ nullable: true })
+  @Field({ nullable: true })
+  pictureUrl?: string
 
   @OneToMany(() => Book, (book) => book.owner)
   books = new Collection<Book>(this)

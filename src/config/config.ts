@@ -9,9 +9,6 @@ export const defaultConfig = {
   env: process.env.NODE_ENV || 'development',
   host: process.env.SERVER_HOST,
   port: parseInt(process.env.SERVER_PORT ?? '', 10),
-  jwt: {
-    secret: process.env.JWT_SECRET,
-  },
   graphql: {
     playground: Boolean(process.env.GRAPHQL_PLAYGROUND)
       ? {
@@ -36,6 +33,10 @@ export const defaultConfig = {
     port: parseInt(process.env.SQL_PORT ?? '', 10),
     host: process.env.SQL_HOST ?? '',
     debug: Boolean(process.env.SQL_DEBUG),
+  },
+  admin: {
+    user: process.env.ADMIN_USER ?? '',
+    password: process.env.ADMIN_PASSWORD ?? '',
   },
 }
 

@@ -9,3 +9,8 @@ export class UpdateProfileInput {
   @Field({ nullable: true })
   username?: string
 }
+
+export class CreateUserInput {
+  email!: string
+  firebaseId!: string
+}

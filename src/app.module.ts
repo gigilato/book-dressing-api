@@ -6,6 +6,7 @@ import { config, GraphQLConfig, MysqlConfig } from '@config'
 import { UserModule } from '@modules/user/user.module'
 import { BookModule } from '@modules/book/book.module'
 import { LoanModule } from '@modules/loan/loan.module'
+import { AuthModule } from '@modules/auth/auth.module'
 import { GqlContext } from '@utils/types'
 
 @Module({
@@ -43,6 +44,7 @@ import { GqlContext } from '@utils/types'
       },
       inject: [ConfigService],
     }),
+    AuthModule,
     UserModule,
     BookModule,
     LoanModule,

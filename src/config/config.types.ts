@@ -1,7 +1,6 @@
 import { defaultConfig } from './config'
 
 export type Config = typeof defaultConfig
-export type JwtConfig = typeof defaultConfig.jwt
 export type GraphQLConfig = typeof defaultConfig.graphql
 export type FirebaseConfig = {
   apiKey: string
@@ -14,3 +13,4 @@ export type FirebaseConfig = {
   measurementId: string
 }
 export type MysqlConfig = typeof defaultConfig.mysql
+export type AdminConfig = typeof defaultConfig.admin
