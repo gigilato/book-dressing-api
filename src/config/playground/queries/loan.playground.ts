@@ -1,6 +1,56 @@
 export const loanQueries = /* GraphQL */ `
+  query loans {
+    loans {
+      pageInfos {
+        hasNextPage
+      }
+      aggregate {
+        count
+      }
+      edges {
+        node {
+          ...LoanFragment
+        }
+      }
+    }
+  }
+
+  query requests {
+    requests {
+      pageInfos {
+        hasNextPage
+      }
+      aggregate {
+        count
+      }
+      edges {
+        node {
+          ...LoanFragment
+        }
+      }
+    }
+  }
+
   mutation requestLoan {
-    requestLoan(bookUuid: "db98efac-3f1d-4cf4-973c-a99df81f1e64") {
+    requestLoan(bookUuid: "") {
+      ...LoanFragment
+    }
+  }
+
+  mutation acceptLoan {
+    acceptLoan(loanUuid: "") {
+      ...LoanFragment
+    }
+  }
+
+  mutation rejectLoan {
+    rejectLoan(loanUuid: "") {
+      ...LoanFragment
+    }
+  }
+
+  mutation finishLoan {
+    rejectLoan(loanUuid: "") {
       ...LoanFragment
     }
   }
