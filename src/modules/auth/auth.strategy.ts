@@ -7,6 +7,7 @@ import { User } from '@modules/user/user.entity'
 import { LibrariesService } from '@libraries/libraries.service'
 import { UserService } from '@modules/user/user.service'
 import { AdminConfig, FirebaseConfig } from '@config'
+import { UnauthorizedError } from '@utils/errors'
 import { Admin } from './auth.types'
 
 @Injectable()
@@ -38,18 +39,16 @@ export class AuthFirebaseStrategy extends PassportStrategy(CustomStrategy, 'fire
         const firebaseConfig = this.configService.get<FirebaseConfig>('firebase')
         // @ts-ignore
         const authorization = req.headers.authorization as string
-        const user = await (async () => {
-          try {
-            if (!authorization) return null
-            const [scheme, idToken] = authorization!.split(' ')
-            if (scheme !== firebaseConfig?.scheme) return null
-            const decodedToken = await this.libService.firebase.authenticate(idToken)
-            return this.userService.getOne({ firebaseId: decodedToken?.uid })
-          } catch (e) {
-            return null
-          }
-        })()
-        done(null, user)
+        if (!authorization) return done(new UnauthorizedError(), null)
+        try {
+          const [scheme, idToken] = authorization!.split(' ')
+          if (scheme !== firebaseConfig?.scheme) throw new UnauthorizedError()
+          const decodedToken = await this.libService.firebase.authenticate(idToken)
+          const user = await this.userService.getOne({ firebaseId: decodedToken?.uid })
+          return done(null, user)
+        } catch (e) {
+          return done(e, null)
+        }
       }
     )
   }

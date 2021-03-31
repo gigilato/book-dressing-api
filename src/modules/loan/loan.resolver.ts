@@ -23,7 +23,7 @@ export class LoanResolver {
   ) {}
 
   @Query(() => LoanConnection)
-  loans(
+  requests(
     @CurrentUser() user: User,
     @Args({ nullable: true }) args?: LoansInput
   ): Promise<LoanConnection> {
@@ -31,7 +31,7 @@ export class LoanResolver {
   }
 
   @Query(() => LoanConnection)
-  loanRequests(
+  loans(
     @CurrentUser() owner: User,
     @Args({ nullable: true }) args?: LoansInput
   ): Promise<LoanConnection> {
@@ -44,7 +44,12 @@ export class LoanResolver {
   @Mutation(() => Loan)
   async requestLoan(@Args() args: CreateLoanInput, @CurrentUser() user: User): Promise<Loan> {
     const result = await this.orm.em.transactional(async (em) => {
-      const book = await this.bookService.getOneAvailableOrFail({ uuid: args.bookUuid }, { em })
+      const book = await this.bookService.getOneAvailableOrFail(
+        { uuid: args.bookUuid },
+        { em, populate: ['owner'] }
+      )
+      const owner = await book.owner.load()
+      if (owner.id === user.id) throw new ValidationError()
       const loan = await this.loanService.create({ book, user })
       em.persist(loan)
       return loan
@@ -57,10 +62,11 @@ export class LoanResolver {
     const result = await this.orm.em.transactional(async (em) => {
       const loan = await this.loanService.getOneOrFail(
         { uuid: args.loanUuid },
-        { em, populate: 'book.owner' }
+        { em, populate: ['book.owner'] }
       )
-      if (loan.status !== LoanStatus.Request && loan.book.owner.id !== user.id)
-        throw new ValidationError()
+      const book = await loan.book.load()
+      const owner = await book.owner.load()
+      if (loan.status !== LoanStatus.Request || owner.id !== user.id) throw new ValidationError()
       const updatedLoan = await this.loanService.update(loan, { status: LoanStatus.Active }, { em })
       em.persist(updatedLoan)
       return updatedLoan
@@ -73,10 +79,11 @@ export class LoanResolver {
     const result = await this.orm.em.transactional(async (em) => {
       const loan = await this.loanService.getOneOrFail(
         { uuid: args.loanUuid },
-        { em, populate: 'book.owner' }
+        { em, populate: ['book.owner'] }
       )
-      if (loan.status !== LoanStatus.Request && loan.book.owner.id !== user.id)
-        throw new ValidationError()
+      const book = await loan.book.load()
+      const owner = await book.owner.load()
+      if (loan.status !== LoanStatus.Request || owner.id !== user.id) throw new ValidationError()
       const updatedLoan = await this.loanService.update(loan, { status: LoanStatus.Cancel }, { em })
       em.persist(updatedLoan)
       return updatedLoan
@@ -89,10 +96,11 @@ export class LoanResolver {
     const result = await this.orm.em.transactional(async (em) => {
       const loan = await this.loanService.getOneOrFail(
         { uuid: args.loanUuid },
-        { em, populate: 'book.owner' }
+        { em, populate: ['book.owner'] }
       )
-      if (loan.status !== LoanStatus.Active && loan.book.owner.id !== user.id)
-        throw new ValidationError()
+      const book = await loan.book.load()
+      const owner = await book.owner.load()
+      if (loan.status !== LoanStatus.Active || owner.id !== user.id) throw new ValidationError()
       const updatedLoan = await this.loanService.update(
         loan,
         { status: LoanStatus.Finish, finishedAt: new Date() },
@@ -105,7 +113,8 @@ export class LoanResolver {
   }
 
   @ResolveField('user', () => User)
-  resolveUser(@Parent() loan: Loan): Promise<User> {
+  async resolveUser(@Parent() loan: Loan): Promise<any> {
+    // return null
     return this.loanLoader.user().load(loan)
   }
 

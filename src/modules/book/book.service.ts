@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common'
 import { EntityRepository, FilterQuery } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { LoanStatus } from '@modules/loan/loan.entity'
+import { LoanService } from '@modules/loan/loan.service'
 import { BaseService } from '@utils/entity'
 import { ValidationError } from '@utils/errors'
 import { ServiceMethodOptions } from '@utils/types'
 import { Book, BookStatus } from './book.entity'
-import { LoanService } from '../loan/loan.service'
 
 @Injectable()
 export class BookService extends BaseService(Book) {

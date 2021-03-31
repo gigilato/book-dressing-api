@@ -17,4 +17,13 @@ export class AuthGuard extends PassportGuard('firebase') {
     const ctx = GqlExecutionContext.create(context)
     return ctx.getContext<GqlRequestWithContext>().req
   }
+
+  async canActivate(context: ExecutionContext) {
+    try {
+      await super.canActivate(context)
+    } catch (e) {
+      throw e
+    }
+    return true
+  }
 }

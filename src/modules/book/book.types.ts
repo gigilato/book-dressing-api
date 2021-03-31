@@ -28,8 +28,10 @@ export class BooksInput extends BaseConnectionInput {
 
 @ArgsType()
 export class CreateBookInput {
-  @Field()
-  isbn!: string
+  @Field({ nullable: true })
+  uuid?: string
+  @Field({ nullable: true })
+  isbn?: string
   @Field()
   title!: string
   @Field()

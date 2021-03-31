@@ -1,4 +1,4 @@
-import { EntityManager, EntityRepository, Index, PrimaryKey, Property } from '@mikro-orm/core'
+import { EntityManager, EntityRepository, PrimaryKey, Property, Unique } from '@mikro-orm/core'
 import { Field, ObjectType } from '@nestjs/graphql'
 import { Injectable, Type } from '@nestjs/common'
 import { v4 } from 'uuid'
@@ -13,7 +13,7 @@ export class BaseEntity {
   id!: number
 
   @Property()
-  @Index()
+  @Unique()
   @Field()
   uuid: string = v4()
 
@@ -68,7 +68,7 @@ export const BaseService = <T extends BaseEntity>(classRef: Type<T>) => {
         offset
       )
 
-      const hasNextPage = entities.length + offset >= count
+      const hasNextPage = entities.length + offset < count
       const connection: IConnection<T> = {
         pageInfos: { hasNextPage },
         aggregate: { count },

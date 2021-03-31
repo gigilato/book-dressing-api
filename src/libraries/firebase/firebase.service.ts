@@ -6,6 +6,7 @@ import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { FirebaseConfig } from '@config'
 import { createReadableStream } from '@utils/create-readable-stream'
+import { ExpiredError, UnauthorizedError } from '@utils/errors'
 import { FIREBASE_BUCKET_URL } from './firebase.constants'
 import { FirebaseBucketDirectories } from './firebase.types'
 
@@ -31,7 +32,8 @@ export class FirebaseService {
       const decodedToken = await admin.auth().verifyIdToken(idToken)
       return decodedToken
     } catch (e) {
-      return null
+      if (e.code === 'auth/id-token-expired') throw new ExpiredError()
+      throw new UnauthorizedError()
     }
   }
 

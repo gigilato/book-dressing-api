@@ -27,16 +27,16 @@ export class BookResolver {
     private readonly bookLoader: BookLoader
   ) {}
 
-  @Query(() => Book)
-  book(@Args() args: BookWhereUniqueInput): Promise<Book> {
-    return this.bookService.getOneOrFail({ uuid: args.bookUuid })
+  @Query(() => Book, { nullable: true })
+  book(@Args() args: BookWhereUniqueInput): Promise<Book | null> {
+    return this.bookService.getOne({ uuid: args.bookUuid })
   }
 
   @Query(() => BookConnection)
   async books(@Args({ nullable: true }) args?: BooksInput): Promise<BookConnection> {
     let where: FilterQuery<Book> = {}
     if (args?.where?.search) {
-      const search = { $like: slugify(args?.where?.search) }
+      const search = { $like: `%${slugify(args?.where?.search)}%` }
       where = { $or: [{ titleSlug: search }, { authorSlug: search }] }
     }
     if (args?.where?.userUuid) {
@@ -75,7 +75,6 @@ export class BookResolver {
     const result = await this.orm.em.transactional(async (em) => {
       const book = await this.bookService.getOneAvailableOrFail({ uuid: args.bookUuid }, { em })
       const removedBook = await this.bookService.remove(book, { em })
-      em.persist(removedBook)
       return removedBook
     })
     return result
