@@ -18,7 +18,9 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "format": "prettier --write \"src/**/*.ts\"",
     "migration:create": "mikro-orm migration:create",
-    "migration:run": "mikro-orm migration:up"
+    "migration:run": "mikro-orm migration:up",
+    "heroku-prebuild": "yarn prebuild",
+    "heroku-postbuild": "yarn build && yarn migration:run"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
