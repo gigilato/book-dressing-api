@@ -2,7 +2,7 @@ import { Logger, Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { GraphQLModule } from '@nestjs/graphql'
-import { config, GraphQLConfig, MysqlConfig } from '@config'
+import { config, GraphQLConfig, DatabaseConfig } from '@config'
 import { UserModule } from '@modules/user/user.module'
 import { BookModule } from '@modules/book/book.module'
 import { LoanModule } from '@modules/loan/loan.module'
@@ -16,18 +16,14 @@ import { GqlContext } from '@utils/types'
     MikroOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
-        const mysql = configService.get<MysqlConfig>('mysql')
+        const database = configService.get<DatabaseConfig>('database')
         const logger = new Logger('MikroORM')
         return {
+          clientUrl: database?.url,
           autoLoadEntities: true,
           type: 'postgresql',
-          dbName: mysql?.database,
-          user: mysql?.username,
-          password: mysql?.password,
-          host: mysql?.host,
-          port: mysql?.port,
           logger: logger.log.bind(logger),
-          debug: mysql?.debug,
+          debug: database?.debug,
           charset: 'utf8mb4_unicode_ci',
         }
       },

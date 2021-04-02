@@ -1,8 +1,10 @@
 import * as dotenv from 'dotenv'
+import dotenvExpand from 'dotenv-expand'
 import { validateEnvFile } from './config.utils'
 import { playgroundTabsConfig } from './playground'
 
-dotenv.config()
+const env = dotenv.config()
+dotenvExpand(env)
 validateEnvFile()
 
 export const defaultConfig = {
@@ -32,12 +34,8 @@ export const defaultConfig = {
       Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_JSON ?? '', 'base64').toString('ascii')
     ),
   },
-  mysql: {
-    database: process.env.SQL_DATABASE ?? '',
-    username: process.env.SQL_USERNAME ?? '',
-    password: process.env.SQL_PASSWORD ?? '',
-    port: parseInt(process.env.SQL_PORT ?? '', 10),
-    host: process.env.SQL_HOST ?? '',
+  database: {
+    url: process.env.DATABASE_URL ?? '',
     debug: Boolean(process.env.SQL_DEBUG),
   },
   admin: {
