@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
-    "@mikro-orm/cli": "^4.5.1",
     "@mikro-orm/core": "^4.5.1",
     "@mikro-orm/nestjs": "^4.2.0",
     "@mikro-orm/postgresql": "^4.5.1",
@@ -52,6 +51,7 @@
   "devDependencies": {
     "@babel/core": "^7.13.13",
     "@babel/preset-env": "^7.13.12",
+    "@mikro-orm/cli": "^4.5.1",
     "@nestjs/cli": "^7.0.0",
     "@nestjs/schematics": "^7.0.0",
     "@nestjs/testing": "^7.0.0",
