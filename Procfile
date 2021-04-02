@@ -1,2 +1,2 @@
-release: node node_modules/@mikro-orm/cli/cli.js migration:up
+release: yarn migration:run
 web: yarn start:prod
