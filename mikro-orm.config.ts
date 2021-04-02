@@ -17,6 +17,7 @@ const config: MikroOrmModuleOptions<IDatabaseDriver<Connection>> = {
     path: './migrations',
     tableName: 'migrations',
     transactional: true,
+    disableForeignKeys: false,
   },
 }
 
