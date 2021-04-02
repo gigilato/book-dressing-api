@@ -5,13 +5,11 @@ const requiredStringSchema = Joi.string().required()
 
 const schema = Joi.object({
   DATABASE_URL: requiredStringSchema,
-  SQL_DEBUG: requiredStringSchema,
   SERVER_HOST: requiredStringSchema,
   SERVER_PORT: requiredStringSchema,
   FIREBASE_SERVICE_ACCOUNT_JSON: requiredStringSchema,
   FIREBASE_CREDENTIAL: requiredStringSchema,
   GRAPHQL_PLAYGROUND: requiredStringSchema,
-  GRAPHQL_ENDPOINT: requiredStringSchema,
   ADMIN_USER: requiredStringSchema,
   ADMIN_PASSWORD: requiredStringSchema,
 }).unknown(true)

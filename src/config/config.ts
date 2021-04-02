@@ -7,6 +7,8 @@ const env = dotenv.config()
 dotenvExpand(env)
 validateEnvFile()
 
+const graphqlEndpoint = '/graphql'
+
 export const defaultConfig = {
   env: process.env.NODE_ENV || 'development',
   host: process.env.SERVER_HOST,
@@ -17,11 +19,11 @@ export const defaultConfig = {
           workspaceName: 'book-dressing-api',
           tabs: playgroundTabsConfig.map((tab) => ({
             ...tab,
-            endpoint: `${process.env.SERVER_HOST}${process.env.GRAPHQL_ENDPOINT}`,
+            endpoint: `${process.env.SERVER_HOST}${graphqlEndpoint}`,
           })),
         }
       : false,
-    path: process.env.GRAPHQL_ENDPOINT,
+    path: graphqlEndpoint,
     introspection: true,
     debug: Boolean(process.env.GRAPHQL_PLAYGROUND),
   },
@@ -36,7 +38,7 @@ export const defaultConfig = {
   },
   database: {
     url: process.env.DATABASE_URL ?? '',
-    debug: Boolean(process.env.SQL_DEBUG),
+    debug: Boolean(process.env.DATABASE_DEBUG),
   },
   admin: {
     user: process.env.ADMIN_USER ?? '',
