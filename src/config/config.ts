@@ -11,15 +11,15 @@ const graphqlEndpoint = '/graphql'
 
 export const defaultConfig = {
   env: process.env.NODE_ENV || 'development',
-  host: process.env.SERVER_HOST,
-  port: parseInt(process.env.SERVER_PORT ?? '', 10),
+  host: process.env.HOST,
+  port: parseInt(process.env.PORT ?? '', 10),
   graphql: {
     playground: Boolean(process.env.GRAPHQL_PLAYGROUND)
       ? {
           workspaceName: 'book-dressing-api',
           tabs: playgroundTabsConfig.map((tab) => ({
             ...tab,
-            endpoint: `${process.env.SERVER_HOST}${graphqlEndpoint}`,
+            endpoint: `${process.env.HOST}${graphqlEndpoint}`,
           })),
         }
       : false,

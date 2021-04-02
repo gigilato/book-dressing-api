@@ -5,8 +5,8 @@ const requiredStringSchema = Joi.string().required()
 
 const schema = Joi.object({
   DATABASE_URL: requiredStringSchema,
-  SERVER_HOST: requiredStringSchema,
-  SERVER_PORT: requiredStringSchema,
+  HOST: requiredStringSchema,
+  PORT: requiredStringSchema,
   FIREBASE_SERVICE_ACCOUNT_JSON: requiredStringSchema,
   FIREBASE_CREDENTIAL: requiredStringSchema,
   GRAPHQL_PLAYGROUND: requiredStringSchema,
