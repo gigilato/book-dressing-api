@@ -14,7 +14,7 @@ export const defaultConfig = {
   graphql: {
     playground: Boolean(process.env.GRAPHQL_PLAYGROUND)
       ? {
-          workspaceName: 'kara-api',
+          workspaceName: 'book-dressing-api',
           tabs: playgroundTabsConfig.map((tab) => ({
             ...tab,
             endpoint: `${process.env.SERVER_HOST}${process.env.GRAPHQL_ENDPOINT}`,
