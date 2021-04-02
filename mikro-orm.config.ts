@@ -13,11 +13,6 @@ const config: MikroOrmModuleOptions<IDatabaseDriver<Connection>> = {
   entities: [User, Book, Loan],
   type: 'postgresql',
   clientUrl: process.env?.DATABASE_URL,
-  driverOptions: {
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  },
   migrations: {
     path: './migrations',
     tableName: 'migrations',
