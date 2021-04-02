@@ -14,7 +14,7 @@ export default {
   host: process.env?.SQL_HOST,
   port: process.env?.SQL_PORT,
   driverOptions: {
-    connection: { ssl: true, sslmode: 'require' },
+    connection: { sslmode: 'require' },
   },
   migrations: {
     path: './migrations',
