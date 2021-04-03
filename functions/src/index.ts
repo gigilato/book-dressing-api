@@ -9,7 +9,7 @@ const authPassword = 'RpZTbvfmxXacJE54'
 const basicKey = Buffer.from(`${authUser}:${authPassword}`).toString('base64')
 const authorization = `Basic ${basicKey}`
 const options = { headers: { authorization } }
-const endpoint = 'http://localhost:3333/users'
+const endpoint = 'https://book-dressing.herokuapp.com/users'
 
 export const onCreate = functions.auth.user().onCreate(async (user) => {
   await axios.post(
