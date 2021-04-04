@@ -1,4 +1,4 @@
-import { ArgsType, Field, InputType, ObjectType } from '@nestjs/graphql'
+import { ArgsType, Field, ID, InputType, ObjectType } from '@nestjs/graphql'
 import { BaseConnectionInput, Connection } from '@utils/pagination'
 import { Book, BookStatus } from './book.entity'
 
@@ -8,7 +8,7 @@ export class BookConnection extends Connection(Book) {}
 @InputType()
 @ArgsType()
 export class BookWhereUniqueInput {
-  @Field()
+  @Field(() => ID)
   bookUuid!: string
 }
 
@@ -16,7 +16,7 @@ export class BookWhereUniqueInput {
 export class BooksWhereInput {
   @Field({ nullable: true })
   search?: string
-  @Field({ nullable: true })
+  @Field(() => ID, { nullable: true })
   userUuid?: string
 }
 
@@ -28,7 +28,7 @@ export class BooksInput extends BaseConnectionInput {
 
 @ArgsType()
 export class CreateBookInput {
-  @Field({ nullable: true })
+  @Field(() => ID, { nullable: true })
   uuid?: string
   @Field({ nullable: true })
   isbn?: string

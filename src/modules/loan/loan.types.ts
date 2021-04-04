@@ -1,4 +1,4 @@
-import { ArgsType, Field, ObjectType } from '@nestjs/graphql'
+import { ArgsType, Field, ID, ObjectType } from '@nestjs/graphql'
 import { BaseConnectionInput, Connection } from '@utils/pagination'
 import { Loan } from './loan.entity'
 
@@ -10,12 +10,12 @@ export class LoansInput extends BaseConnectionInput {}
 
 @ArgsType()
 export class CreateLoanInput {
-  @Field()
+  @Field(() => ID)
   bookUuid!: string
 }
 
 @ArgsType()
 export class LoanWhereUniqueInput {
-  @Field()
+  @Field(() => ID)
   loanUuid!: string
 }
