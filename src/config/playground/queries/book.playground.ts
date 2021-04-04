@@ -33,6 +33,21 @@ export const bookQueries = /* GraphQL */ `
     }
   }
 
+  mutation updateBook {
+    updateBook(
+      where: { bookUuid: "db98efac-3f1d-4cf4-973c-a99df81f1e64" }
+      data: { title: "title update", author: "author update", description: "description update" }
+    ) {
+      ...BookFragment
+    }
+  }
+
+  mutation removeBook {
+    removeBook(bookUuid: "db98efac-3f1d-4cf4-973c-a99df81f1e64") {
+      ...BookFragment
+    }
+  }
+
   fragment BookFragment on Book {
     uuid
     title
