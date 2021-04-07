@@ -29,7 +29,7 @@ export class User extends BaseEntity {
   @Field({ nullable: true })
   lastname?: string
 
-  @Property({ nullable: true })
+  @Property({ type: 'text', nullable: true })
   @Field({ nullable: true })
   pictureUrl?: string
 

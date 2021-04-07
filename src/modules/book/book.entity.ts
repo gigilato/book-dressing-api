@@ -45,7 +45,7 @@ export class Book extends BaseEntity {
   @Index()
   authorSlug!: string
 
-  @Property()
+  @Property({ type: 'text' })
   @Field()
   description!: string
 
@@ -53,7 +53,7 @@ export class Book extends BaseEntity {
   @Field(() => BookStatus)
   status: BookStatus = BookStatus.Active
 
-  @Property({ nullable: true })
+  @Property({ type: 'text', nullable: true })
   @Field({ nullable: true })
   pictureUrl?: string
 
