@@ -31,7 +31,7 @@ export const Connection = <T extends BaseEntity>(classRef: Type<T>) => {
 
   @ObjectType({ isAbstract: true })
   abstract class ConnectionType implements IConnection<T> {
-    @Field(() => [EdgeType], { nullable: true })
+    @Field(() => [EdgeType])
     edges!: EdgeType[]
     @Field(() => AggregateType)
     aggregate!: AggregateType
