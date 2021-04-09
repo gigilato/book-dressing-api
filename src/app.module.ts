@@ -9,6 +9,7 @@ import { LoanModule } from '@modules/loan/loan.module'
 import { AuthModule } from '@modules/auth/auth.module'
 import { LibrariesModule } from '@libraries/libraries.module'
 import { GqlContext } from '@utils/types'
+import { LikeModule } from './modules/like/like.module'
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { GqlContext } from '@utils/types'
     UserModule,
     BookModule,
     LoanModule,
+    LikeModule,
   ],
   controllers: [],
   providers: [],

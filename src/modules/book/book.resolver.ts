@@ -1,8 +1,9 @@
-import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql'
+import { Args, Int, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql'
 import { FilterQuery, MikroORM } from '@mikro-orm/core'
 import { UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@utils/guards'
 import { User } from '@modules/user/user.entity'
+import { LikeService } from '@modules/like/like.service'
 import { UserService } from '@modules/user/user.service'
 import { slugify } from '@utils/slugify'
 import { CurrentUser } from '@utils/decorators'
@@ -24,6 +25,7 @@ export class BookResolver {
     private readonly orm: MikroORM,
     private readonly bookService: BookService,
     private readonly userService: UserService,
+    private readonly likeService: LikeService,
     private readonly bookLoader: BookLoader
   ) {}
 
@@ -56,13 +58,14 @@ export class BookResolver {
   }
 
   @Mutation(() => Book)
-  async updateBook(@Args() args: UpdateBookInput): Promise<Book> {
+  async updateBook(@Args() args: UpdateBookInput, @CurrentUser() user: User): Promise<Book> {
     const result = await this.orm.em.transactional(async (em) => {
       const where = { uuid: args.where.bookUuid }
       const book =
         args.data.status === BookStatus.Inactive
-          ? await this.bookService.getOneAvailableOrFail(where, { em })
-          : await this.bookService.getOneOrFail(where, { em })
+          ? await this.bookService.getOneAvailableOrFail(where, { em, populate: ['owner'] })
+          : await this.bookService.getOneOrFail(where, { em, populate: ['owner'] })
+      this.bookService.validateOwnership(book, user)
       const updatedBook = await this.bookService.update(book, args.data, { em })
       em.persist(updatedBook)
       return updatedBook
@@ -71,9 +74,26 @@ export class BookResolver {
   }
 
   @Mutation(() => Book)
-  async removeBook(@Args() args: BookWhereUniqueInput): Promise<Book> {
+  async likeBook(@Args() args: BookWhereUniqueInput, @CurrentUser() user: User): Promise<Book> {
+    const result = await this.orm.em.transactional(async (em) => {
+      const where = { uuid: args.bookUuid }
+      const book = await this.bookService.getOneOrFail(where, { em })
+      const like = await this.likeService.getOne({ book, user }, { em })
+      if (like) await this.likeService.remove(like, { em })
+      else {
+        const newLike = await this.likeService.create({ book, user }, { em })
+        em.persist(newLike)
+      }
+      return book
+    })
+    return result
+  }
+
+  @Mutation(() => Book)
+  async removeBook(@Args() args: BookWhereUniqueInput, @CurrentUser() user: User): Promise<Book> {
     const result = await this.orm.em.transactional(async (em) => {
       const book = await this.bookService.getOneAvailableOrFail({ uuid: args.bookUuid }, { em })
+      await this.bookService.validateOwnership(book, user)
       const removedBook = await this.bookService.remove(book, { em })
       return removedBook
     })
@@ -87,5 +107,15 @@ export class BookResolver {
   @ResolveField('available', () => Boolean)
   resolveAvailable(@Parent() book: Book): Promise<Boolean> {
     return this.bookLoader.available().load(book)
+  }
+
+  @ResolveField('hasLiked', () => Boolean)
+  resolveHasLiked(@Parent() book: Book, @CurrentUser() user: User): Promise<Boolean> {
+    return this.bookLoader.hasLiked().load({ book, user })
+  }
+
+  @ResolveField('likeCount', () => Int)
+  resolveLikeCount(@Parent() book: Book): Promise<number> {
+    return this.bookLoader.likeCount().load(book)
   }
 }

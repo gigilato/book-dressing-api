@@ -27,9 +27,9 @@ export class Loan extends BaseEntity {
   @Property({ nullable: true })
   notifiedAt?: Date
 
-  @ManyToOne(() => User, { wrappedReference: true })
+  @ManyToOne(() => User, { wrappedReference: true, onDelete: 'cascade' })
   user!: IdentifiedReference<User>
 
-  @ManyToOne(() => Book, { wrappedReference: true })
+  @ManyToOne(() => Book, { wrappedReference: true, onDelete: 'cascade' })
   book!: IdentifiedReference<Book>
 }

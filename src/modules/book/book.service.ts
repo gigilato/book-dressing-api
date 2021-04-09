@@ -3,6 +3,7 @@ import { EntityRepository, FilterQuery } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { LoanStatus } from '@modules/loan/loan.entity'
 import { LoanService } from '@modules/loan/loan.service'
+import { User } from '@modules/user/user.entity'
 import { BaseService } from '@utils/entity'
 import { ValidationError } from '@utils/errors'
 import { ServiceMethodOptions } from '@utils/types'
@@ -16,6 +17,12 @@ export class BookService extends BaseService(Book) {
     private readonly loanService: LoanService
   ) {
     super(bookRepository)
+  }
+
+  async validateOwnership(book: Book, user: User) {
+    const owner = await book.owner.load()
+    console.log(owner.id, user.id)
+    if (owner.id !== user.id) throw new ValidationError()
   }
 
   async isAvailable(book: Book, options?: ServiceMethodOptions) {

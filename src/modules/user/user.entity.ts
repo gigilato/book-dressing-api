@@ -3,6 +3,7 @@ import { Field, ObjectType } from '@nestjs/graphql'
 import { BaseEntity } from '@utils/entity'
 import { Book } from '@modules/book/book.entity'
 import { Loan } from '@modules/loan/loan.entity'
+import { Like } from '@modules/like/like.entity'
 
 @Entity()
 @ObjectType()
@@ -38,4 +39,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Loan, (loan) => loan.user)
   loans = new Collection<Loan>(this)
+
+  @OneToMany(() => Like, (like) => like.user)
+  likes = new Collection<Like>(this)
 }
