@@ -5,6 +5,7 @@ import { AuthGuard } from '@utils/guards'
 import { User } from '@modules/user/user.entity'
 import { LikeService } from '@modules/like/like.service'
 import { UserService } from '@modules/user/user.service'
+import { Loan } from '@modules/loan/loan.entity'
 import { slugify } from '@utils/slugify'
 import { CurrentUser } from '@utils/decorators'
 import { Book, BookStatus } from './book.entity'
@@ -117,5 +118,10 @@ export class BookResolver {
   @ResolveField('likeCount', () => Int)
   resolveLikeCount(@Parent() book: Book): Promise<number> {
     return this.bookLoader.likeCount().load(book)
+  }
+
+  @ResolveField('currentLoan', () => Loan, { nullable: true })
+  resolveCurrentLoan(@Parent() book: Book, @CurrentUser() user: User): Promise<Loan | null> {
+    return this.bookLoader.currentLoan().load({ book, user })
   }
 }

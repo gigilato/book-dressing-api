@@ -3,6 +3,8 @@ import { Injectable } from '@nestjs/common'
 import { User } from '@modules/user/user.entity'
 import { UserService } from '@modules/user/user.service'
 import { LikeService } from '@modules/like/like.service'
+import { LoanService } from '@modules/loan/loan.service'
+import { Loan } from '@modules/loan/loan.entity'
 import { BookService } from './book.service'
 import { Book } from './book.entity'
 
@@ -11,7 +13,8 @@ export class BookLoader {
   constructor(
     private readonly bookService: BookService,
     private readonly userService: UserService,
-    private readonly likeService: LikeService
+    private readonly likeService: LikeService,
+    private readonly loanService: LoanService
   ) {}
 
   owner() {
@@ -46,6 +49,12 @@ export class BookLoader {
   likeCount() {
     return new DataLoader<Book, number>(async (data) =>
       Promise.all(data.map((book) => this.likeService.getCount({ book })))
+    )
+  }
+
+  currentLoan() {
+    return new DataLoader<{ book: Book; user: User }, Loan | null>(async (data) =>
+      Promise.all(data.map(({ book, user }) => this.loanService.getCurrentLoan(book, user)))
     )
   }
 }

@@ -50,11 +50,8 @@ export class LoanResolver {
       )
       const owner = await book.owner.load()
       if (owner.id === user.id) throw new ValidationError()
-      const existingLoan = await this.loanService.getOne(
-        { book, user, status: { $in: [LoanStatus.Request, LoanStatus.Active] } },
-        { em }
-      )
-      if (existingLoan) throw new ExistError()
+      const currentLoan = await this.loanService.getCurrentLoan(book, user, { em })
+      if (currentLoan) throw new ExistError()
       const loan = await this.loanService.create({ book, user })
       em.persist(loan)
       return loan
