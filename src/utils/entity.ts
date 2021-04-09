@@ -26,7 +26,7 @@ export class BaseEntity {
   updatedAt: Date = new Date()
 }
 
-export const BaseService = <T extends BaseEntity>(classRef: Type<T>) => {
+export const BaseService = <T>(classRef: Type<T>) => {
   @Injectable()
   class BaseServiceType {
     constructor(private readonly repository: EntityRepository<T>) {}
@@ -75,6 +75,11 @@ export const BaseService = <T extends BaseEntity>(classRef: Type<T>) => {
         edges: entities.map((node, cursor) => ({ cursor, node })),
       }
       return connection
+    }
+
+    getCount(where: FilterQuery<T>, options?: ServiceMethodOptions) {
+      const repo = this.getRepository(options?.em)
+      return repo.count(where)
     }
 
     async create(data: EntityData<T>, options?: ServiceMethodOptions): Promise<T> {
