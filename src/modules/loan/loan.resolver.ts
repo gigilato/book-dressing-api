@@ -3,7 +3,7 @@ import { MikroORM } from '@mikro-orm/core'
 import { UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@utils/guards'
 import { CurrentUser } from '@utils/decorators'
-import { ValidationError } from '@utils/errors'
+import { ExistError, ValidationError } from '@utils/errors'
 import { Book } from '@modules/book/book.entity'
 import { User } from '@modules/user/user.entity'
 import { BookService } from '@modules/book/book.service'
@@ -50,6 +50,11 @@ export class LoanResolver {
       )
       const owner = await book.owner.load()
       if (owner.id === user.id) throw new ValidationError()
+      const existingLoan = await this.loanService.getOne(
+        { book, user, status: { $in: [LoanStatus.Request, LoanStatus.Active] } },
+        { em }
+      )
+      if (existingLoan) throw new ExistError()
       const loan = await this.loanService.create({ book, user })
       em.persist(loan)
       return loan
@@ -75,6 +80,25 @@ export class LoanResolver {
   }
 
   @Mutation(() => Loan)
+  async cancelLoan(
+    @Args() args: LoanWhereUniqueInput,
+    @CurrentUser() currentUser: User
+  ): Promise<Loan> {
+    const result = await this.orm.em.transactional(async (em) => {
+      const loan = await this.loanService.getOneOrFail(
+        { uuid: args.loanUuid },
+        { em, populate: ['user'] }
+      )
+      const user = await loan.book.load()
+      if (loan.status !== LoanStatus.Request || currentUser.id !== user.id)
+        throw new ValidationError()
+      await this.loanService.remove(loan, { em })
+      return loan
+    })
+    return result
+  }
+
+  @Mutation(() => Loan)
   async rejectLoan(@Args() args: LoanWhereUniqueInput, @CurrentUser() user: User): Promise<Loan> {
     const result = await this.orm.em.transactional(async (em) => {
       const loan = await this.loanService.getOneOrFail(
@@ -84,9 +108,8 @@ export class LoanResolver {
       const book = await loan.book.load()
       const owner = await book.owner.load()
       if (loan.status !== LoanStatus.Request || owner.id !== user.id) throw new ValidationError()
-      const updatedLoan = await this.loanService.update(loan, { status: LoanStatus.Cancel }, { em })
-      em.persist(updatedLoan)
-      return updatedLoan
+      await this.loanService.remove(loan, { em })
+      return loan
     })
     return result
   }

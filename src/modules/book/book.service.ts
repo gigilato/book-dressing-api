@@ -21,15 +21,11 @@ export class BookService extends BaseService(Book) {
 
   async validateOwnership(book: Book, user: User) {
     const owner = await book.owner.load()
-    console.log(owner.id, user.id)
     if (owner.id !== user.id) throw new ValidationError()
   }
 
   async isAvailable(book: Book, options?: ServiceMethodOptions) {
-    const activeLoan = await this.loanService.getOne(
-      { status: { $in: [LoanStatus.Active, LoanStatus.Late] } },
-      options
-    )
+    const activeLoan = await this.loanService.getOne({ status: LoanStatus.Active }, options)
     return book.status === BookStatus.Active && !activeLoan
   }
 

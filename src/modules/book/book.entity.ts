@@ -19,8 +19,8 @@ const slugifyTitle = (entity: Book) => slugify(entity.title)
 const slugifyAuthor = (entity: Book) => slugify(entity.author)
 
 export enum BookStatus {
-  Active,
-  Inactive,
+  Active = 'Active',
+  Inactive = 'Inactive',
 }
 registerEnumType(BookStatus, { name: 'BookStatus' })
 
@@ -50,7 +50,7 @@ export class Book extends BaseEntity {
   @Field()
   description!: string
 
-  @Enum()
+  @Enum(() => BookStatus)
   @Field(() => BookStatus)
   status: BookStatus = BookStatus.Active
 

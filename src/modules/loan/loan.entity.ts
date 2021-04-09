@@ -5,18 +5,16 @@ import { User } from '@modules/user/user.entity'
 import { Book } from '@modules/book/book.entity'
 
 export enum LoanStatus {
-  Request,
-  Cancel,
-  Active,
-  Late,
-  Finish,
+  Request = 'Request',
+  Active = 'Active',
+  Finish = 'Finish',
 }
 registerEnumType(LoanStatus, { name: 'LoanStatus' })
 
 @Entity()
 @ObjectType()
 export class Loan extends BaseEntity {
-  @Enum()
+  @Enum(() => LoanStatus)
   @Field(() => LoanStatus)
   status: LoanStatus = LoanStatus.Request
 

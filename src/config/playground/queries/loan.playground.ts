@@ -43,6 +43,12 @@ export const loanQueries = /* GraphQL */ `
     }
   }
 
+  mutation cancelLoan {
+    cancelLoan(loanUuid: "") {
+      ...LoanFragment
+    }
+  }
+
   mutation rejectLoan {
     rejectLoan(loanUuid: "") {
       ...LoanFragment
