@@ -26,7 +26,7 @@ export class BookService extends BaseService(Book) {
   }
 
   async isAvailable(book: Book, options?: ServiceMethodOptions) {
-    const activeLoan = await this.loanService.getOne({ status: LoanStatus.Active }, options)
+    const activeLoan = await this.loanService.getOne({ book, status: LoanStatus.Active }, options)
     return book.status === BookStatus.Active && !activeLoan
   }
 
