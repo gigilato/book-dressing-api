@@ -86,7 +86,7 @@ export class LoanResolver {
         { uuid: args.loanUuid },
         { em, populate: ['user'] }
       )
-      const user = await loan.book.load()
+      const user = await loan.user.load()
       if (loan.status !== LoanStatus.Request || currentUser.id !== user.id)
         throw new ValidationError()
       await this.loanService.remove(loan, { em })
