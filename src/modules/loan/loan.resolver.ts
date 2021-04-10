@@ -50,8 +50,8 @@ export class LoanResolver {
       )
       const owner = await book.owner.load()
       if (owner.id === user.id) throw new ValidationError()
-      const currentLoan = await this.loanService.getCurrentLoan(book, user, { em })
-      if (currentLoan) throw new ExistError()
+      const currentRequest = await this.loanService.getCurrentRequest(book, user, { em })
+      if (currentRequest) throw new ExistError()
       const loan = await this.loanService.create({ book, user })
       em.persist(loan)
       return loan

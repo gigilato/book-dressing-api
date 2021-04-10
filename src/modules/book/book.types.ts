@@ -16,14 +16,24 @@ export class BookWhereUniqueInput {
 export class BooksWhereInput {
   @Field({ nullable: true })
   search?: string
-  @Field(() => ID, { nullable: true })
-  userUuid?: string
 }
 
 @ArgsType()
 export class BooksInput extends BaseConnectionInput {
   @Field(() => BooksWhereInput, { nullable: true })
   where?: BooksWhereInput
+}
+
+@InputType()
+export class UserBooksWhereInput extends BooksWhereInput {
+  @Field(() => ID)
+  userUuid!: string
+}
+
+@ArgsType()
+export class UserBooksInput extends BaseConnectionInput {
+  @Field(() => UserBooksWhereInput)
+  where!: UserBooksWhereInput
 }
 
 @ArgsType()

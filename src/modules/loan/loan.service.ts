@@ -16,7 +16,7 @@ export class LoanService extends BaseService(Loan) {
     super(loanRepository)
   }
 
-  getCurrentLoan(book: Book, user: User, options?: ServiceMethodOptions) {
+  getCurrentRequest(book: Book, user: User, options?: ServiceMethodOptions) {
     return this.getOne(
       {
         book,

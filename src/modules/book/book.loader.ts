@@ -52,9 +52,9 @@ export class BookLoader {
     )
   }
 
-  currentLoan() {
+  currentRequest() {
     return new DataLoader<{ book: Book; user: User }, Loan | null>(async (data) =>
-      Promise.all(data.map(({ book, user }) => this.loanService.getCurrentLoan(book, user)))
+      Promise.all(data.map(({ book, user }) => this.loanService.getCurrentRequest(book, user)))
     )
   }
 }

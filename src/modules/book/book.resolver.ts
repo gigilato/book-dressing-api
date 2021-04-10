@@ -6,7 +6,6 @@ import { User } from '@modules/user/user.entity'
 import { LikeService } from '@modules/like/like.service'
 import { UserService } from '@modules/user/user.service'
 import { Loan } from '@modules/loan/loan.entity'
-import { slugify } from '@utils/slugify'
 import { CurrentUser } from '@utils/decorators'
 import { Book, BookStatus } from './book.entity'
 import { BookService } from './book.service'
@@ -14,6 +13,7 @@ import {
   BookConnection,
   BooksInput,
   BookWhereUniqueInput,
+  UserBooksInput,
   CreateBookInput,
   UpdateBookInput,
 } from './book.types'
@@ -37,15 +37,44 @@ export class BookResolver {
 
   @Query(() => BookConnection)
   async books(@Args({ nullable: true }) args?: BooksInput): Promise<BookConnection> {
-    let where: FilterQuery<Book> = {}
-    if (args?.where?.search) {
-      const search = { $like: `%${slugify(args?.where?.search)}%` }
-      where = { $or: [{ titleSlug: search }, { authorSlug: search }] }
+    const where: FilterQuery<Book> = {
+      status: BookStatus.Active,
+      ...this.bookService.getSearchFilters(args?.where?.search),
     }
-    if (args?.where?.userUuid) {
-      const owner = await this.userService.getOneOrFail({ uuid: args?.where?.userUuid })
-      where = { ...where, owner }
+
+    return this.bookService.getConnection(where, {
+      limit: args?.limit,
+      offset: args?.offset,
+      orderBy: { createdAt: 'DESC' },
+    })
+  }
+
+  @Query(() => BookConnection)
+  async userBooks(@Args({ nullable: true }) args?: UserBooksInput): Promise<BookConnection> {
+    const owner = await this.userService.getOneOrFail({ uuid: args?.where?.userUuid })
+    const where: FilterQuery<Book> = {
+      owner,
+      status: BookStatus.Active,
+      ...this.bookService.getSearchFilters(args?.where?.search),
     }
+
+    return this.bookService.getConnection(where, {
+      limit: args?.limit,
+      offset: args?.offset,
+      orderBy: { createdAt: 'DESC' },
+    })
+  }
+
+  @Query(() => BookConnection)
+  async myBooks(
+    @CurrentUser() owner: User,
+    @Args({ nullable: true }) args?: BooksInput
+  ): Promise<BookConnection> {
+    const where: FilterQuery<Book> = {
+      owner,
+      ...this.bookService.getSearchFilters(args?.where?.search),
+    }
+
     return this.bookService.getConnection(where, {
       limit: args?.limit,
       offset: args?.offset,
@@ -120,8 +149,8 @@ export class BookResolver {
     return this.bookLoader.likeCount().load(book)
   }
 
-  @ResolveField('currentLoan', () => Loan, { nullable: true })
-  resolveCurrentLoan(@Parent() book: Book, @CurrentUser() user: User): Promise<Loan | null> {
-    return this.bookLoader.currentLoan().load({ book, user })
+  @ResolveField('currentRequest', () => Loan, { nullable: true })
+  resolveCurrentRequest(@Parent() book: Book, @CurrentUser() user: User): Promise<Loan | null> {
+    return this.bookLoader.currentRequest().load({ book, user })
   }
 }
