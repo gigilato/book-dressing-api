@@ -7,13 +7,13 @@ import { LikeService } from '@modules/like/like.service'
 import { UserService } from '@modules/user/user.service'
 import { Loan } from '@modules/loan/loan.entity'
 import { CurrentUser } from '@utils/decorators'
+import { slugify } from '@utils/slugify'
 import { Book, BookStatus } from './book.entity'
 import { BookService } from './book.service'
 import {
   BookConnection,
   BooksInput,
   BookWhereUniqueInput,
-  UserBooksInput,
   CreateBookInput,
   UpdateBookInput,
 } from './book.types'
@@ -36,43 +36,24 @@ export class BookResolver {
   }
 
   @Query(() => BookConnection)
-  async books(@Args({ nullable: true }) args?: BooksInput): Promise<BookConnection> {
+  async books(@Args() args: BooksInput): Promise<BookConnection> {
+    const { search, onlyActive, userUuid } = args.where
+    const searchFilters = (() => {
+      if (!search) return null
+      const slugifySearch = { $like: `%${slugify(search)}%` }
+      return { $or: [{ titleSlug: slugifySearch }, { authorSlug: slugifySearch }] }
+    })()
+    const userFilters = await (async () => {
+      if (!userUuid) return null
+      const owner = await this.userService.getOneOrFail({ uuid: userUuid })
+      return { owner }
+    })()
+    const statusFilters = onlyActive ? { status: BookStatus.Active } : null
+
     const where: FilterQuery<Book> = {
-      status: BookStatus.Active,
-      ...this.bookService.getSearchFilters(args?.where?.search),
-    }
-
-    return this.bookService.getConnection(where, {
-      limit: args?.limit,
-      offset: args?.offset,
-      orderBy: { createdAt: 'DESC' },
-    })
-  }
-
-  @Query(() => BookConnection)
-  async userBooks(@Args({ nullable: true }) args?: UserBooksInput): Promise<BookConnection> {
-    const owner = await this.userService.getOneOrFail({ uuid: args?.where?.userUuid })
-    const where: FilterQuery<Book> = {
-      owner,
-      status: BookStatus.Active,
-      ...this.bookService.getSearchFilters(args?.where?.search),
-    }
-
-    return this.bookService.getConnection(where, {
-      limit: args?.limit,
-      offset: args?.offset,
-      orderBy: { createdAt: 'DESC' },
-    })
-  }
-
-  @Query(() => BookConnection)
-  async myBooks(
-    @CurrentUser() owner: User,
-    @Args({ nullable: true }) args?: BooksInput
-  ): Promise<BookConnection> {
-    const where: FilterQuery<Book> = {
-      owner,
-      ...this.bookService.getSearchFilters(args?.where?.search),
+      ...statusFilters,
+      ...userFilters,
+      ...searchFilters,
     }
 
     return this.bookService.getConnection(where, {

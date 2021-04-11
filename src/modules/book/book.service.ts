@@ -5,7 +5,6 @@ import { LoanStatus } from '@modules/loan/loan.entity'
 import { LoanService } from '@modules/loan/loan.service'
 import { User } from '@modules/user/user.entity'
 import { BaseService } from '@utils/entity'
-import { slugify } from '@utils/slugify'
 import { ValidationError } from '@utils/errors'
 import { ServiceMethodOptions } from '@utils/types'
 import { Book, BookStatus } from './book.entity'
@@ -35,14 +34,5 @@ export class BookService extends BaseService(Book) {
     const isBookAvailable = await this.isAvailable(book, options)
     if (!isBookAvailable) throw new ValidationError()
     return book
-  }
-
-  getSearchFilters(search?: string) {
-    if (!search) return {}
-    const slugifySearch = { $like: `%${slugify(search)}%` }
-    const searchFilters = {
-      $or: [{ titleSlug: slugifySearch }, { authorSlug: slugifySearch }],
-    }
-    return searchFilters
   }
 }
