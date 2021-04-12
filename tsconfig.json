@@ -11,14 +11,7 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "target": "es2019",
-    "strict": true,
-    "baseUrl": "./src",
-    "paths": {
-      "@config": ["config/index"],
-      "@modules/*": ["modules/*"],
-      "@utils/*": ["utils/*"],
-      "@libraries/*": ["libraries/*"]
-    }
+    "strict": true
   },
   "include": ["src/**/*", "scripts/**/*", "./mikro-orm.config.ts"],
   "exclude": ["node_modules", "dist"]

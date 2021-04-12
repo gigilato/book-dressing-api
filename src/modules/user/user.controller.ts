@@ -11,7 +11,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common'
-import { AdminGuard } from '@utils/guards'
+import { AdminGuard } from '../../utils/guards'
 import { UserService } from './user.service'
 import { CreateUserInput } from './user.types'
 

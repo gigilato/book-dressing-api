@@ -1,12 +1,12 @@
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql'
 import { MikroORM } from '@mikro-orm/core'
 import { UseGuards } from '@nestjs/common'
-import { AuthGuard } from '@utils/guards'
-import { CurrentUser } from '@utils/decorators'
-import { ExistError, ValidationError } from '@utils/errors'
-import { Book } from '@modules/book/book.entity'
-import { User } from '@modules/user/user.entity'
-import { BookService } from '@modules/book/book.service'
+import { AuthGuard } from '../../utils/guards'
+import { CurrentUser } from '../../utils/decorators'
+import { ExistError, ValidationError } from '../../utils/errors'
+import { Book } from '../book/book.entity'
+import { User } from '../user/user.entity'
+import { BookService } from '../book/book.service'
 import { Loan, LoanStatus } from './loan.entity'
 import { LoanService } from './loan.service'
 import { CreateLoanInput, LoanConnection, LoansInput, LoanWhereUniqueInput } from './loan.types'
@@ -135,7 +135,6 @@ export class LoanResolver {
 
   @ResolveField('user', () => User)
   async resolveUser(@Parent() loan: Loan): Promise<any> {
-    // return null
     return this.loanLoader.user().load(loan)
   }
 

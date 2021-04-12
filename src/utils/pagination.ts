@@ -1,6 +1,6 @@
 import { Field, ObjectType, Int, ArgsType } from '@nestjs/graphql'
 import { Type } from '@nestjs/common'
-import { BaseEntity } from '@utils/entity'
+import { BaseEntity } from './entity'
 
 export interface IConnection<T> {
   edges: { cursor: number; node: T }[]

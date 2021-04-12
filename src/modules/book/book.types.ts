@@ -1,5 +1,5 @@
 import { ArgsType, Field, ID, InputType, ObjectType } from '@nestjs/graphql'
-import { BaseConnectionInput, Connection } from '@utils/pagination'
+import { BaseConnectionInput, Connection } from '../../utils/pagination'
 import { Book, BookStatus } from './book.entity'
 
 @ObjectType()

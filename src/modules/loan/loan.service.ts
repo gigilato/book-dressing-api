@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { EntityRepository } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
-import { BaseService } from '@utils/entity'
-import { ServiceMethodOptions } from '@utils/types'
-import { Book } from '@modules/book/book.entity'
-import { User } from '@modules/user/user.entity'
+import { BaseService } from '../../utils/entity'
+import { ServiceMethodOptions } from '../../utils/types'
+import { Book } from '../book/book.entity'
+import { User } from '../user/user.entity'
 import { Loan, LoanStatus } from './loan.entity'
 
 @Injectable()

@@ -9,11 +9,11 @@ import {
   Property,
   IdentifiedReference,
 } from '@mikro-orm/core'
-import { BaseEntity } from '@utils/entity'
-import { slugify } from '@utils/slugify'
-import { User } from '@modules/user/user.entity'
-import { Loan } from '@modules/loan/loan.entity'
-import { Like } from '@modules/like/like.entity'
+import { BaseEntity } from '../../utils/entity'
+import { slugify } from '../../utils/slugify'
+import { User } from '../user/user.entity'
+import { Loan } from '../loan/loan.entity'
+import { Like } from '../like/like.entity'
 
 const slugifyTitle = (entity: Book) => slugify(entity.title)
 const slugifyAuthor = (entity: Book) => slugify(entity.author)

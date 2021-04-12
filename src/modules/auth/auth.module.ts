@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
 import { PassportModule } from '@nestjs/passport'
-import { UserModule } from '@modules/user/user.module'
+import { UserModule } from '../user/user.module'
 import { AuthBasicStrategy, AuthFirebaseStrategy } from './auth.strategy'
 
 @Module({

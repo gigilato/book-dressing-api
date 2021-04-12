@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common'
 import { EntityRepository, FilterQuery } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
-import { LoanStatus } from '@modules/loan/loan.entity'
-import { LoanService } from '@modules/loan/loan.service'
-import { User } from '@modules/user/user.entity'
-import { BaseService } from '@utils/entity'
-import { ValidationError } from '@utils/errors'
-import { ServiceMethodOptions } from '@utils/types'
+import { LoanStatus } from '../loan/loan.entity'
+import { LoanService } from '../loan/loan.service'
+import { User } from '../user/user.entity'
+import { BaseService } from '../../utils/entity'
+import { ValidationError } from '../../utils/errors'
+import { ServiceMethodOptions } from '../../utils/types'
 import { Book, BookStatus } from './book.entity'
 
 @Injectable()

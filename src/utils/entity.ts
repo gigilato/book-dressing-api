@@ -3,9 +3,9 @@ import { Field, ObjectType } from '@nestjs/graphql'
 import { Injectable, Type } from '@nestjs/common'
 import { v4 } from 'uuid'
 import { EntityData, FilterQuery } from '@mikro-orm/core/typings'
-import { ServiceMethodOptions } from '@utils/types'
-import { NotFoundError } from '@utils/errors'
-import { IConnection } from '@utils/pagination'
+import { ServiceMethodOptions } from './types'
+import { NotFoundError } from './errors'
+import { IConnection } from './pagination'
 
 @ObjectType()
 export class BaseEntity {

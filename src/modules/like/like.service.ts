@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { EntityRepository } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
-import { BaseService } from '@utils/entity'
+import { BaseService } from '../../utils/entity'
 import { Like } from './like.entity'
 
 @Injectable()

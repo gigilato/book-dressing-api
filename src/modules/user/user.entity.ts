@@ -1,9 +1,9 @@
 import { Collection, Entity, Index, OneToMany, Property } from '@mikro-orm/core'
 import { Field, ObjectType } from '@nestjs/graphql'
-import { BaseEntity } from '@utils/entity'
-import { Book } from '@modules/book/book.entity'
-import { Loan } from '@modules/loan/loan.entity'
-import { Like } from '@modules/like/like.entity'
+import { BaseEntity } from '../../utils/entity'
+import { Book } from '../book/book.entity'
+import { Loan } from '../loan/loan.entity'
+import { Like } from '../like/like.entity'
 
 @Entity()
 @ObjectType()
@@ -24,11 +24,11 @@ export class User extends BaseEntity {
 
   @Property({ nullable: true })
   @Field({ nullable: true })
-  firstname?: string
+  name?: string
 
-  @Property({ nullable: true })
+  @Property({ type: 'text', nullable: true })
   @Field({ nullable: true })
-  lastname?: string
+  description?: string
 
   @Property({ type: 'text', nullable: true })
   @Field({ nullable: true })

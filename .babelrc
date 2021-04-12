@@ -1,18 +1,4 @@
 {
   "presets": ["@babel/preset-env"],
-  "plugins": [
-    "lodash",
-    [
-      "module-resolver",
-      {
-        "root": "./src",
-        "alias": {
-          "@config": "./src/config",
-          "@modules": "./src/modules",
-          "@libraries": "./src/libraries",
-          "@utils": "./src/utils"
-        }
-      }
-    ]
-  ]
+  "plugins": ["lodash"]
 }

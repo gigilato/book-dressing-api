@@ -1,5 +1,5 @@
 import { EntityManager, QueryOrderMap } from '@mikro-orm/core'
-import { User } from '@modules/user/user.entity'
+import { User } from '../modules/user/user.entity'
 
 export type GqlContext = { req?: Request }
 export declare type DeepPartial<T> = {

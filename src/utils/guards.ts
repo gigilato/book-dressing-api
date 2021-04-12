@@ -2,7 +2,7 @@ import { ExecutionContext, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { GqlExecutionContext } from '@nestjs/graphql'
 import { AuthGuard as PassportGuard } from '@nestjs/passport'
-import { GqlRequestWithContext } from '@utils/types'
+import { GqlRequestWithContext } from './types'
 
 @Injectable()
 export class AdminGuard extends PassportGuard('basic') {}

@@ -1,9 +1,9 @@
 import DataLoader from 'dataloader'
 import { Injectable } from '@nestjs/common'
-import { User } from '@modules/user/user.entity'
-import { Book } from '@modules/book/book.entity'
-import { UserService } from '@modules/user/user.service'
-import { BookService } from '@modules/book/book.service'
+import { User } from '../user/user.entity'
+import { Book } from '../book/book.entity'
+import { UserService } from '../user/user.service'
+import { BookService } from '../book/book.service'
 import { LoanService } from './loan.service'
 import { Loan } from './loan.entity'
 

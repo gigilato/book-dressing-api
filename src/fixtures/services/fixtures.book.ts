@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import faker from 'faker'
-import { Book } from '@modules/book/book.entity'
-import { BookService } from '@modules/book/book.service'
-import { User } from '@modules/user/user.entity'
+import { Book } from '../../modules/book/book.entity'
+import { BookService } from '../../modules/book/book.service'
+import { User } from '../../modules/user/user.entity'
 
 const pictures = [
   'https://static01.nyt.com/images/2014/02/05/books/05before-and-after-slide-T6H2/05before-and-after-slide-T6H2-superJumbo.jpg?quality=75&auto=webp&disable=upscale',

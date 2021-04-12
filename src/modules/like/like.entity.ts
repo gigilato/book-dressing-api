@@ -1,6 +1,6 @@
 import { Entity, ManyToOne, Property, IdentifiedReference, PrimaryKeyType } from '@mikro-orm/core'
-import { User } from '@modules/user/user.entity'
-import { Book } from '@modules/book/book.entity'
+import { User } from '../user/user.entity'
+import { Book } from '../book/book.entity'
 
 @Entity()
 export class Like {
