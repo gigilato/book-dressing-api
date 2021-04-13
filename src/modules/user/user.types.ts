@@ -8,6 +8,8 @@ export class UpdateProfileInput {
   username?: string
   @Field({ nullable: true })
   description?: string
+  @Field({ nullable: true })
+  pictureUrl?: string
 }
 
 export class CreateUserInput {
