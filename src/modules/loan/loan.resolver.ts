@@ -11,6 +11,7 @@ import { Loan, LoanStatus } from './loan.entity'
 import { LoanService } from './loan.service'
 import { CreateLoanInput, LoanConnection, LoansInput, LoanWhereUniqueInput } from './loan.types'
 import { LoanLoader } from './loan.loader'
+import { UserService } from '../user/user.service'
 
 @Resolver(() => Loan)
 @UseGuards(AuthGuard)
@@ -19,26 +20,23 @@ export class LoanResolver {
     private readonly orm: MikroORM,
     private readonly loanService: LoanService,
     private readonly bookService: BookService,
+    private readonly userService: UserService,
     private readonly loanLoader: LoanLoader
   ) {}
 
   @Query(() => LoanConnection)
-  requests(
-    @CurrentUser() user: User,
-    @Args({ nullable: true }) args?: LoansInput
-  ): Promise<LoanConnection> {
-    return this.loanService.getConnection({ user }, { limit: args?.limit, offset: args?.offset })
-  }
-
-  @Query(() => LoanConnection)
-  loans(
-    @CurrentUser() owner: User,
-    @Args({ nullable: true }) args?: LoansInput
-  ): Promise<LoanConnection> {
-    return this.loanService.getConnection(
-      { book: { owner } },
-      { limit: args?.limit, offset: args?.offset }
-    )
+  async loans(@Args() args: LoansInput): Promise<LoanConnection> {
+    const { userUuid, ownerUuid } = args.where
+    if ((!userUuid && !ownerUuid) || (userUuid && ownerUuid)) throw new ValidationError()
+    const where = await (async () => {
+      if (userUuid) {
+        const user = await this.userService.getOneOrFail({ uuid: userUuid })
+        return { user }
+      }
+      const owner = await this.userService.getOneOrFail({ uuid: ownerUuid })
+      return { book: { owner } }
+    })()
+    return this.loanService.getConnection(where, { limit: args?.limit, offset: args?.offset })
   }
 
   @Mutation(() => Loan)

@@ -1,22 +1,6 @@
 export const loanQueries = /* GraphQL */ `
   query loans {
-    loans {
-      pageInfos {
-        hasNextPage
-      }
-      aggregate {
-        count
-      }
-      edges {
-        node {
-          ...LoanFragment
-        }
-      }
-    }
-  }
-
-  query requests {
-    requests {
+    loans(where: { userUuid: "", ownerUuid: "" }) {
       pageInfos {
         hasNextPage
       }
